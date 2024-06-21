@@ -1,5 +1,5 @@
 const app = require("./app.js");
 
-app.listen(3000, () => {
-  console.log("Up on 3000");
+app.listen(process.env.PORT, () => {
+  console.log(`Up on ${process.env.PORT}`);
 });
