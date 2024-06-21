@@ -14,6 +14,10 @@ docker compose up
 The api is up at `http://localhost:3000`
 and you will find swagger at `http://localhost:3000/api-docs/` where you can find the endpoints with expected inputs/outputs
 
+##### Note
+You need to have .env having this API=https://api.apyhub.com/data/convert/currency/multiple, and generate a token from apyhub as I have reached the limit of API calls then pass it as TOKEN=<API_TOKEN> in .env
+After doing that even on set up with docker these secrets will be passed automatically as I am not hardcoding any credentials, so it can be updated with ease on expiry of token
+
 ## Functional Requirements
 #### Currency Exchange:
 - [x] 1. Integrate with a public currency conversion API to read the latest currency exchange rates
