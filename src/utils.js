@@ -92,31 +92,39 @@ function validateTypes(body, is_conversion=false){
         }
     }
 }
-function formatResponse(result, is_conversion=false,amount=1) {
+function formatRatesResponse(result) {
     var data = []
-    if(is_conversion){
-        var item = {}
-        for (let i = 0; i < Object.keys(result).length; i++){
-                var key = Object.keys(result)[i]
-                item['from']=key.split("_")[0]
-                item['to']=key.split("_")[1]
-                item['amount']=Number(amount)
-                item['result']=result[key]
-                data.push(item)
-                item = {}
-        }
-    }else{
-        var item = {}
-        
-        for (let i = 0; i < Object.keys(result).length; i++){
-                var key = Object.keys(result)[i]
-                item['from']=key.split("_")[0]
-                item['to']=key.split("_")[1]
-                item['rate']=result[key]
-                data.push(item)
-                item = {}
-        }
+    
+    var item = {}
+    
+    for (let i = 0; i < Object.keys(result).length; i++){
+            var key = Object.keys(result)[i]
+            item['from_currency']=key.split("_")[0]
+            item['to_currency']=key.split("_")[1]
+            item['rate']=result[key]
+            data.push(item)
+            item = {}
     }
-    return data
+    
+    const response = {}
+    response['rates']=data
+    return response
 }
-module.exports= {validateProperties,validateTypes,validateCurrencies,formatResponse}
+function formatConversionsResponse(result,amount) {
+    var data = []
+  
+    var item = {}
+    for (let i = 0; i < Object.keys(result).length; i++){
+            var key = Object.keys(result)[i]
+            item['from_currency']=key.split("_")[0]
+            item['to_currency']=key.split("_")[1]
+            item['amount']=Number(amount)
+            item['result']=result[key]
+            data.push(item)
+            item = {}
+    }
+    const response = {}
+    response['conversions']=data
+    return response
+}
+module.exports= {validateProperties,validateTypes,validateCurrencies,formatRatesResponse,formatConversionsResponse}

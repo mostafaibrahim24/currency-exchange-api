@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const {formatResponse}=require('./utils')
+const {formatRatesResponse,formatConversionsResponse}=require('./utils')
 
 
 async function callExternalAPI (req) {
@@ -26,16 +26,19 @@ const getExchangeRate = async(req,res) => {
     try{
         const external_api_response = await callExternalAPI(req)
         var result = await external_api_response.json();
+        //Token expired (specific to apyhub as number of api calls are limited, and after exceeding the limit it expires/invalidated)
+        if (result['data']){
+            throw "Token expired/invalid"//Only for our api logs, not shown anywhere else
+        }
     }catch(error){
         console.error("Error calling external api: ",error)
         return res.status(500).json({Error: "Unexpected error occurred, try again after a while."})
     }
-    var data=formatResponse(result)
+    var data=formatRatesResponse(result)
     return res.status(200).json(data)
 }
 
 const convert = async (req,res) => {
-    const is_conversion = true
     const amount = req.body.amount
     var result = {}
     try{
@@ -53,7 +56,7 @@ const convert = async (req,res) => {
         var key = Object.keys(result)[i]
         result[key]=result[key] * Number(amount)
     }
-    var data=formatResponse(result,is_conversion,amount)
+    var data=formatConversionsResponse(result,amount)
     return res.status(200).json(data)
 
 }

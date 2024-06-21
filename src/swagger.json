@@ -1,0 +1,244 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Currency Exchange Public API",
+    "description": "A system that exposes a public API for currency exchange."
+  },
+  "host": "localhost:3000",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/currency/exchange-rate": {
+      "post": {
+        "requestBody": {
+          "description": "Example of a valid request, to_currency can acccept one or more currencies",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties":{
+                  "from_currency": {
+                    "type": "string",
+                    "example": "usd"
+                  },
+                  "to_currency": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "egp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve latest exchange rate from one currency to one or more currencies",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from_currency": {
+                          "type": "string",
+                          "example": "usd"
+                        },
+                        "to_currency": {
+                          "type": "string",
+                          "example": "egp"
+                        },
+                        "rate": {
+                          "type": "number",
+                          "example": 47.71190127
+                        }
+                      }
+                    }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - if not allowed properties and/or required properties not provided these arrays will contain which properties are they: `not_allowed`, `required`, if invalid types provided in properties then this array will contain these properties: `properties`, if currencies not supported sent then this array will contain what properties contain them: `currencies_not_supported`",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                      "Error": {
+                        "type":"string",
+                        "example": "Please adhere to API's required and allowed properties in body"
+                      },"required": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "to_currency"
+                        }
+                      },
+                      "not_allowed": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "currency"
+                        }
+                      }
+                    }
+                    
+                  
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - If there is an issue with the external api",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                      "Error": {
+                        "type":"string",
+                        "example": "Unexpected error occurred, try again after a while."
+                      }
+                    }
+                    
+                  
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency/convert": {
+      "post": {
+        "requestBody": {
+          "description": "Example of a valid request, to_currency can acccept one or more currencies",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties":{
+                  "from_currency": {
+                    "type": "string",
+                    "example": "usd"
+                  },
+                  "to_currency": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "egp"
+                    }
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 2 
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve latest exchange rate from one currency to one or more currencies",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "conversions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from_currency": {
+                          "type": "string",
+                          "example": "usd"
+                        },
+                        "to_currency": {
+                          "type": "string",
+                          "example": "egp"
+                        },
+                        "amount": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "result": {
+                          "type": "number",
+                          "example": 95.42380254
+                        }
+                      }
+                    }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - if not allowed properties and/or required properties not provided these arrays will contain which properties are they: `not_allowed`, `required`, if invalid types provided in properties then this array will contain these properties: `properties`, if currencies not supported sent then this array will contain what properties contain them: `currencies_not_supported`",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                      "Error": {
+                        "type":"string",
+                        "example": "Please adhere to API's required and allowed properties in body"
+                      },"required": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "amount"
+                        }
+                      },
+                      "not_allowed": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "money"
+                        }
+                      }
+                    }
+                    
+                  
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - If there is an issue with the external api",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                      "Error": {
+                        "type":"string",
+                        "example": "Unexpected error occurred, try again after a while."
+                      }
+                    }
+                    
+                  
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

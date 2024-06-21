@@ -5,7 +5,7 @@ const {
 
 const router = require("express").Router();
 
-router.route("/convert").get(convert);
-router.route("/exchange-rate").get(getExchangeRate);
+router.route("/convert").post(convert);
+router.route("/exchange-rate").post(getExchangeRate);
 
 module.exports = router;
