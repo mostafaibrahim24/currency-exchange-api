@@ -1,4 +1,7 @@
 const fetch = require('node-fetch')
+const {formatResponse}=require('./utils')
+
+
 async function callExternalAPI (req) {
     body = {
             source: req.body.from_currency,
@@ -15,33 +18,6 @@ async function callExternalAPI (req) {
                                                                 });
     return external_api_response
     
-}
-function formatResponse(result, is_conversion=false,amount=1) {
-    var data = []
-    if(is_conversion){
-        var item = {}
-        for (let i = 0; i < Object.keys(result).length; i++){
-                var key = Object.keys(result)[i]
-                item['from']=key.split("_")[0]
-                item['to']=key.split("_")[1]
-                item['amount']=Number(amount)
-                item['result']=result[key]
-                data.push(item)
-                item = {}
-        }
-    }else{
-        var item = {}
-        
-        for (let i = 0; i < Object.keys(result).length; i++){
-                var key = Object.keys(result)[i]
-                item['from']=key.split("_")[0]
-                item['to']=key.split("_")[1]
-                item['rate']=result[key]
-                data.push(item)
-                item = {}
-        }
-    }
-    return data
 }
 
 
