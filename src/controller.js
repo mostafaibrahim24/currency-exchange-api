@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const fetch = require('node-fetch-cache')
 const {formatRatesResponse,formatConversionsResponse}=require('./utils')
 
 
